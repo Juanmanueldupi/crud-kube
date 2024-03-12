@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  bbdd_name: admin
+  bbdd_user: admin
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: cm-mariadb

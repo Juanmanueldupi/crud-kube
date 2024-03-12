@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crudphp
+  labels:
+    app: crudphp
+    tier: frontend
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: crudphp
+            tier: frontend
+    template:
+        metadata:
+            labels:
+                app: crudphp
+                tier: frontend
+        spec:
+            containers:
+                - name: crudphp
+                  image: jmdpsysadmin/crudphp:5
+                  env:
+                    - name: BASE_URL
+                      value: "http://localhost:8085/"
+                    - name: DB_HOST
+                      value: mariadb
+                    - name: DB_NAME
+                      valueFrom:
+                        configMapKeyRef:
+                          name: cm-mariadb
+                          key: bbdd_name
+                    - name: DB_PASSWORD
+                      valueFrom:
+                        secretKeyRef:
+                          name: secret-mariadb
+                          key: passwd_user
+                    - name: DB_USER
+                      valueFrom:
+                        configMapKeyRef:
+                          name: cm-mariadb
+                          key: bbdd_user
+                  ports:
+                    - containerPort: 80
+                      name: crudphp
